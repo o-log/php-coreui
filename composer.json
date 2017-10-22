@@ -1,0 +1,37 @@
+{
+  "name": "o-log/php-coreui",
+  "description": "CoreUI php wrapper",
+  "minimum-stability": "beta",
+  "repositories": [
+    {
+      "type":"package",
+      "package": {
+        "name": "mrholek/CoreUI-Free-Bootstrap-Admin-Template",
+        "version":"1.0",
+        "source": {
+          "url": "https://github.com/mrholek/CoreUI-Free-Bootstrap-Admin-Template",
+          "type": "git",
+          "reference":"master"
+        }
+      }
+    }
+  ],
+  "require" : {
+    "o-log/php-bt" : "8.*",
+    "o-log/php-router" : "2.*",
+    "o-log/php-layouts" : "2.*",
+    "mrholek/CoreUI-Free-Bootstrap-Admin-Template" : "1.*",
+    "fortawesome/font-awesome" : "4.7.*"
+  },
+  "autoload-dev" : {
+    "psr-0" : {
+      "Config" : "",
+      "CoreUIDemo" : ""
+    }
+  },
+  "autoload" : {
+    "psr-0" : {
+      "OLOG" : ""
+    }
+  }
+}

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+SOURCE=vendor/mrholek/CoreUI-Free-Bootstrap-Admin-Template/Static_Full_Project_GULP
+TARGET=public/assets/coreui
+rm -R $TARGET
+mkdir -p $TARGET
+cp -R ${SOURCE}/css $TARGET
+cp -R ${SOURCE}/js $TARGET
+
+SOURCE=vendor/fortawesome/font-awesome
+TARGET=public/assets/font-awesome
+rm -R $TARGET
+cp -R ${SOURCE}/css $TARGET
+cp -R ${SOURCE}/fonts $TARGET
