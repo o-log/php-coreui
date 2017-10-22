@@ -3,6 +3,7 @@
 namespace OLOG\CoreUI;
 
 use OLOG\ActionInterface;
+use OLOG\BT\LayoutBootstrap4;
 use OLOG\HTML;
 use OLOG\Layouts\CurrentUserNameInterface;
 use OLOG\Layouts\LayoutInterface;
@@ -17,17 +18,10 @@ use OLOG\Url;
 class LayoutCoreUI implements
 	LayoutInterface
 {
-
 	static public function render($content_html_or_callable, $action_obj = null)
 	{
-		$breadcrumbs_arr = [];
-
-		$h1_str = '&nbsp;';
-		$menu_arr = [];
-
 		$site_title = 'HOME';
 
-		$page_title = $site_title;
 		$user_name = 'Неизвестный пользователь';
 		$page_toolbar_html = '';
 
@@ -37,53 +31,11 @@ class LayoutCoreUI implements
 				$page_toolbar_html = $action_obj->pageToolbarHtml();
 			}
 
-			if ($action_obj instanceof CurrentUserNameInterface) {
-				$user_name = $action_obj->currentUserName();
-			}
-
 			if ($action_obj instanceof SiteTitleInterface) {
 				$site_title = $action_obj->siteTitle();
 			}
 
-			if ($action_obj instanceof TopActionObjInterface) {
-				$top_action_obj = $action_obj->topActionObj();
-				$extra_breadcrumbs_arr = [];
-
-				while ($top_action_obj) {
-					$top_action_title = '#NO_TITLE#';
-					if ($top_action_obj instanceof PageTitleInterface) {
-						$top_action_title = $top_action_obj->pageTitle();
-					}
-
-					$top_action_url = '#NO_URL#';
-					if ($top_action_obj instanceof ActionInterface) {
-						$top_action_url = $top_action_obj->url();
-					}
-
-					array_unshift($extra_breadcrumbs_arr, HTML::a($top_action_url, $top_action_title));
-
-					if ($top_action_obj instanceof TopActionObjInterface) {
-						if ($top_action_obj != $top_action_obj->topActionObj()) {
-							$top_action_obj = $top_action_obj->topActionObj();
-							continue;
-						}
-					}
-
-					$top_action_obj = null;
-				}
-
-				$breadcrumbs_arr = array_merge($breadcrumbs_arr, $extra_breadcrumbs_arr);
-			}
-
-			if ($action_obj instanceof PageTitleInterface) {
-				$h1_str = $action_obj->pageTitle();
-				$page_title = $h1_str;
-			}
-
-			if ($action_obj instanceof MenuInterface) {
-				$menu_arr = $action_obj::menuArr();
-			}
-		}
+        }
 
 		?><!DOCTYPE html>
 <html lang="en">
@@ -115,8 +67,6 @@ class LayoutCoreUI implements
     <script src="/assets/bootstrap4/js/bootstrap.js"></script>
     <!--<script src="js/libs/pace.min.js"></script>-->
 
-    <!-- Main scripts -->
-    <script src="/assets/coreui/js/app.js"></script>
 
 </head>
 
@@ -150,21 +100,14 @@ class LayoutCoreUI implements
         <li class="nav-item">
             <a class="nav-link navbar-toggler sidebar-toggler" href="#">☰</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">...</a>
-        </li>
+        <?php self::user($action_obj) ?>
     </ul>
 </header>
 <div class="app-body">
     <div class="sidebar">
         <nav class="sidebar-nav">
             <ul class="nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="index.html"><i class="icon-speedometer"></i> Dashboard <span class="badge badge-info">NEW</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="...">...</a>
-                </li>
+                <?php self::sidebar($action_obj) ?>
             </ul>
         </nav>
     </div>
@@ -173,7 +116,7 @@ class LayoutCoreUI implements
     <main class="main">
         <!-- Breadcrumb -->
         <ol class="breadcrumb">
-            ...
+            <?php self::breadcrumbs($action_obj) ?>
         </ol>
         <div class="container-fluid">
 
@@ -188,9 +131,11 @@ class LayoutCoreUI implements
         </div>
     </main>
 
+    <!--
     <aside class="aside-menu">
         ...
     </aside>
+    -->
 
 </div>
 
@@ -198,10 +143,82 @@ class LayoutCoreUI implements
     ...
 </footer>
 
+<!-- Main scripts -->
+<script src="/assets/coreui/js/app.js"></script>
+
 </body>
 </html><?php
 	}
 
+	static public function user($action_obj){
+        if (!($action_obj instanceof CurrentUserNameInterface)) {
+            return;
+        }
+
+        ?>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><?= $action_obj->currentUserName(); ?></a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="/auth/logout">Logout</a>
+            </div>
+        </li>
+        <?php
+    }
+
+	static public function breadcrumbs($action_obj){
+        /*
+        <nav aria-label="breadcrumb" role="navigation">
+        <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Library</li>
+        </ol>
+        </nav>
+
+         */
+
+        $breadcrumbs_arr = [];
+
+        if ($action_obj instanceof TopActionObjInterface) {
+            $top_action_obj = $action_obj->topActionObj();
+            $extra_breadcrumbs_arr = [];
+
+            while ($top_action_obj) {
+                $top_action_title = '#NO_TITLE#';
+                if ($top_action_obj instanceof PageTitleInterface) {
+                    $top_action_title = $top_action_obj->pageTitle();
+                }
+
+                $top_action_url = '#NO_URL#';
+                if ($top_action_obj instanceof ActionInterface) {
+                    $top_action_url = $top_action_obj->url();
+                }
+
+                array_unshift($extra_breadcrumbs_arr, HTML::a($top_action_url, $top_action_title));
+
+                if ($top_action_obj instanceof TopActionObjInterface) {
+                    if ($top_action_obj != $top_action_obj->topActionObj()) {
+                        $top_action_obj = $top_action_obj->topActionObj();
+                        continue;
+                    }
+                }
+
+                $top_action_obj = null;
+            }
+
+            $breadcrumbs_arr = array_merge($breadcrumbs_arr, $extra_breadcrumbs_arr);
+        }
+
+        foreach ($breadcrumbs_arr as $item) {
+            ?><li class="breadcrumb-item"><?= $item ?></li><?php
+        }
+
+        if ($action_obj instanceof PageTitleInterface) {
+            ?><li class="breadcrumb-item active"><?= $action_obj->pageTitle()?></li><?php
+        }
+
+    }
+
+    /*
 	static public function isRequestedPage($menu_item_obj)
 	{
 
@@ -218,4 +235,57 @@ class LayoutCoreUI implements
 
 		return false;
 	}
+    */
+
+    static public function sidebar($action_obj){
+        if (!($action_obj instanceof MenuInterface)){
+            return;
+        }
+
+        foreach ($action_obj::menuArr() as $menu_item_obj) {
+            assert($menu_item_obj instanceof MenuItem);
+
+            $href = 'href="#"';
+            if ($menu_item_obj->getUrl()) {
+                $href = 'href="' . HTML::url($menu_item_obj->getUrl()) . '"';
+            }
+
+            $icon = '';
+            if ($menu_item_obj->getIconClassesStr()) {
+                $icon = '<i class="' . HTML::attr($menu_item_obj->getIconClassesStr()) . '"></i> ';
+            }
+
+            $children_arr = $menu_item_obj->getChildrenArr();
+            if (count($children_arr)) {
+                ?>
+                <li class="nav-item nav-dropdown">
+                    <a <?= $href ?> class="nav-link nav-dropdown-toggle"><?= $icon . HTML::content($menu_item_obj->getText()) ?> <span class="caret"></span></a>
+                    <ul class="nav-dropdown-items">
+                        <?php
+                        /** @var  $child_menu_item_obj \OLOG\Layouts\MenuItem */
+                        foreach ($children_arr as $child_menu_item_obj) {
+                            assert($child_menu_item_obj instanceof MenuItem);
+
+                            $children_href = '';
+                            if ($child_menu_item_obj->getUrl()) {
+                                $children_href = 'href="' . HTML::url($child_menu_item_obj->getUrl()) . '"';
+                            }
+
+                            $children_icon = '';
+                            if ($child_menu_item_obj->getIconClassesStr()) {
+                                $children_icon = '<i class="' . HTML::attr($child_menu_item_obj->getIconClassesStr()) . '"></i> ';
+                            }
+                            ?><li class="nav-item"><a class="nav-link" <?= $children_href ?>><?= $children_icon . HTML::content($child_menu_item_obj->getText()) ?></a></li><?php
+                        }
+                        ?>
+                    </ul>
+                </li>
+                <?php
+            } else {
+                ?><li class="nav-item"><a class="nav-link" <?= $href ?>><?= $icon . HTML::content($menu_item_obj->getText()) ?></a></li><?php
+            }
+        }
+
+    }
+
 }

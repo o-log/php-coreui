@@ -4,12 +4,14 @@ namespace CoreUIDemo;
 
 use OLOG\ActionInterface;
 use OLOG\AdminLTE\LayoutCoreUI;
+use OLOG\Layouts\AdminLayoutSelector;
 use OLOG\Layouts\MenuInterface;
 use OLOG\Layouts\PageTitleInterface;
 use OLOG\Layouts\TopActionObjInterface;
+use OLOG\MaskActionInterface;
 
 class DemoAction2 implements
-    ActionInterface,
+    MaskActionInterface,
     PageTitleInterface,
     TopActionObjInterface,
     MenuInterface
@@ -21,13 +23,17 @@ class DemoAction2 implements
         return DemoMenu::menuArr();
     }
 
-    public function __construct($id = '(\d+)')
+    public function __construct($id)
     {
         $this->id = $id;
     }
 
+    static public function mask(){
+        return '/action2/(\d+)';
+    }
+
     public function url(){
-        return '/action/' . $this->id;
+        return '/action2/' . $this->id;
     }
 
     public function pageTitle(){
@@ -43,6 +49,6 @@ class DemoAction2 implements
 
         $html .= '<div>TEST ACTION ' . $this->id . '</div>';
 
-        LayoutCoreUI::render($html, $this);
+        AdminLayoutSelector::render($html, $this);
     }
 }

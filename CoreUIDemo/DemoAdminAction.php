@@ -5,10 +5,11 @@ namespace CoreUIDemo;
 use OLOG\ActionInterface;
 use OLOG\HTML;
 use OLOG\Layouts\AdminLayoutSelector;
+use OLOG\Layouts\CurrentUserNameInterface;
 use OLOG\Layouts\MenuInterface;
 use OLOG\Layouts\PageTitleInterface;
 
-class DemoAdminAction implements
+class DemoAdminAction extends DemoActionsBase implements
     ActionInterface,
     PageTitleInterface,
 	MenuInterface
@@ -25,7 +26,7 @@ class DemoAdminAction implements
     }
 
     public function pageToolbarHtml(){
-        return '<a class="btn btn-default"><span class="glyphicon glyphicon-plus"></span></a>';
+        return '<a class="btn btn-default"><span class="fa fa-plus"></span></a>';
     }
 
 	static public function menuArr()
