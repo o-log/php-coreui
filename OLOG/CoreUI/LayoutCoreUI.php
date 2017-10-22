@@ -99,7 +99,7 @@ class LayoutCoreUI implements
     <title>...</title>
 
     <!-- Icons -->
-    <link href="/assets/font-awesome/font-awesome.css" rel="stylesheet">
+    <link href="/assets/font-awesome/css/font-awesome.css" rel="stylesheet">
     <!--<link href="assets/css/simple-line-icons.css" rel="stylesheet">-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.css">
 

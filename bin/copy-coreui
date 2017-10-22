@@ -4,11 +4,13 @@ SOURCE=vendor/mrholek/CoreUI-Free-Bootstrap-Admin-Template/Static_Full_Project_G
 TARGET=public/assets/coreui
 rm -R $TARGET
 mkdir -p $TARGET
-cp -R ${SOURCE}/css $TARGET
-cp -R ${SOURCE}/js $TARGET
+cp -vr ${SOURCE}/css $TARGET
+cp -vr ${SOURCE}/js $TARGET
+cp -vr ${SOURCE}/img $TARGET
 
 SOURCE=vendor/fortawesome/font-awesome
 TARGET=public/assets/font-awesome
 rm -R $TARGET
-cp -R ${SOURCE}/css $TARGET
-cp -R ${SOURCE}/fonts $TARGET
+mkdir -p $TARGET
+cp -vr ${SOURCE}/css ${TARGET}
+cp -vr ${SOURCE}/fonts $TARGET

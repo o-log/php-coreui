@@ -2,6 +2,9 @@
   "name": "o-log/php-coreui",
   "description": "CoreUI php wrapper",
   "minimum-stability": "beta",
+  "bin": [
+    "bin/copy-coreui"
+  ],
   "repositories": [
     {
       "type":"package",
