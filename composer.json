@@ -23,8 +23,7 @@
     "o-log/php-bt" : "8.*",
     "o-log/php-router" : "2.*",
     "o-log/php-layouts" : "2.*",
-    "mrholek/CoreUI-Free-Bootstrap-Admin-Template" : "1.*",
-    "fortawesome/font-awesome" : "4.7.*"
+    "mrholek/CoreUI-Free-Bootstrap-Admin-Template" : "1.*"
   },
   "autoload-dev" : {
     "psr-0" : {

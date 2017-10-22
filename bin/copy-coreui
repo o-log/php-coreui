@@ -7,10 +7,3 @@ mkdir -p $TARGET
 cp -vr ${SOURCE}/css $TARGET
 cp -vr ${SOURCE}/js $TARGET
 cp -vr ${SOURCE}/img $TARGET
-
-SOURCE=vendor/fortawesome/font-awesome
-TARGET=public/assets/font-awesome
-rm -R $TARGET
-mkdir -p $TARGET
-cp -vr ${SOURCE}/css ${TARGET}
-cp -vr ${SOURCE}/fonts $TARGET
