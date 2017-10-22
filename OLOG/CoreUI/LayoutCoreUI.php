@@ -61,7 +61,7 @@ class LayoutCoreUI implements
 
     <!-- Bootstrap and necessary plugins -->
     <!--<script src="js/libs/jquery.min.js"></script>-->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <!--<script src="js/libs/tether.min.js"></script>-->
     <script src="/assets/bootstrap4/assets/js/vendor/popper.min.js"></script>
     <script src="/assets/bootstrap4/js/bootstrap.js"></script>
